@@ -1,0 +1,30 @@
+name: QA-006 Detecta Segredos 
+
+on:
+  pull_request:
+    branches: [main, dev, "feature/*"]
+  push:
+    branches: [main, dev, "feature/*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write # ESSENCIAL: Permite que o GitLeaks adicione o comentário no PR
+
+jobs:
+  gitleaks:
+    name: Scan for leaked secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout full history for scanning
+        uses: actions/checkout@v4 
+        with:
+          fetch-depth: 0
+
+      - name: Scan repository history and changes
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: "true" 
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
