@@ -2,9 +2,9 @@ name: QA-006 Detecta Segredos
 
 on:
   pull_request:
-    branches: [main, dev, "feature/*"]
+    branches: [main, develop, "feature/*"]
   push:
-    branches: [main, dev, "feature/*"]
+    branches: [main, develop, "feature/*"]
   workflow_dispatch:
 
 permissions:
