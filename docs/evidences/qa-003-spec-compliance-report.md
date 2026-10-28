@@ -24,7 +24,7 @@
 
 ## 2. Compliance Report (`_KB/agents/templates/compliance-report.md`)
 
-- **Task/PR:** `QA-003` — Branch `feat/qa-003-spec-compliance`
+- **Task/PR:** `QA-003` — [PR #39 (`feat/qa-003-spec-compliance`)](https://github.com/UniSENAI-Sorocaba/plataforma-quality/pull/39)
 - **Baseline tag/SHA:** `governance-v0.1.0@379131e3fa7c0411d5055b14b6bb30dd0853a3b5`
 - **SPEC/AC/MH/ADR/Contracts:**
   - SPECs: `SPEC-AUTH-001..004`, `SPEC-PI-001..004`, `SPEC-EXT-001..003`, `SPEC-PORTAL-001..002`
@@ -138,6 +138,7 @@ AÇÃO: Exige justificativa e decisão humana antes de aprovar/concluir.
 ## 4. Rastreabilidade de PR e Revisão Humana
 
 - **Repositório:** `https://github.com/UniSENAI-Sorocaba/plataforma-quality`
+- **Pull Request:** [#39 — `feat(qa-003): implementa spec-compliance gate, testes e evidencias`](https://github.com/UniSENAI-Sorocaba/plataforma-quality/pull/39)
 - **Branch da entrega:** `feat/qa-003-spec-compliance`
-- **Revisor obrigatório (`backlogs/quality-security.md`):** Gabriel Ribeiro de Camargo Miranda
-- **Status da Revisão:** Aguardando parecer humano de Gabriel Ribeiro no Pull Request (conforme `_KB/agents/workflows/implement-task.md`: *"5. Abrir PR com evidências e riscos; aguardar revisão humana"* e `_KB/agents/policies/authority.md`: *"Agente não aprova a própria alteração nem marca Done"*).
+- **Revisor obrigatório (`backlogs/quality-security.md`):** Gabriel Ribeiro de Camargo Miranda ([revisão no PR #39](https://github.com/UniSENAI-Sorocaba/plataforma-quality/pull/39#partial-pull-merging))
+- **Status da Revisão:** Aguardando parecer humano de Gabriel Ribeiro no [PR #39](https://github.com/UniSENAI-Sorocaba/plataforma-quality/pull/39) (conforme `_KB/agents/workflows/implement-task.md`: *"5. Abrir PR com evidências e riscos; aguardar revisão humana"* e `_KB/agents/policies/authority.md`: *"Agente não aprova a própria alteração nem marca Done"*).
