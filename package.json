@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "node --test tests/repository/*.test.mjs",
+    "test": "node --test tests/repository/*.test.mjs tests/api/*.test.mjs tests/e2e/*.spec.mjs",
     "compliance": "node scripts/spec-compliance.mjs",
     "verify": "node scripts/spec-compliance.mjs",
     "check": "node scripts/spec-compliance.mjs"
