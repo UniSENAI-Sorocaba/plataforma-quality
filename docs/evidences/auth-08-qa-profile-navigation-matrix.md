@@ -295,3 +295,14 @@
 - **Resultado esperado:** O PO deve confirmar em `PG-006` se `AUTH-08-FE-07` será cancelada/absorvida por `Coordenação` e qual é a rota inicial padrão quando o CPF possui múltiplos papéis.
 - **Evidência sem dados sensíveis:** Seção *"Detalhes ainda não definidos"* de `SPEC-AUTH-003` e issue `PG-006` (`plataforma-governance#6`).
 - **Owner sugerido:** **Product Owner** (Fellipe Raszejas — `PG-006`).
+
+
+---
+
+## 6. Checklist "Pronto quando" (`Definition of Done` — `AUTH-08-QA`) e Vínculo de PR/Revisão
+
+| Critério "Pronto quando" (`plataforma-quality#31`) | Status na Suíte QA (`tests/api` + `tests/e2e`) | Status na Integração Real (`FE` + `BE`) | Evidência / Vínculo Rastreável |
+| :--- | :---: | :---: | :--- |
+| **1. Os perfis aprovados têm resultado para redirecionamento, menus e rota proibida.** | `PASS` (`9/9` cenários automatizados aprovados) | `WARN` (Bloqueado por `AUTH-08-BE` e `AUTH-08-FE-01..03, 06..07`) | - Matriz (Seção 1) e Casos `CT-AUTH08-01..06` (Seção 3)<br>- Respostas sanitizadas para **Aluno**, **Docente**, **Coordenação** e **Multi-perfil** (Seção 4.1)<br>- Automação: [`tests/api/auth-08-rbac-navigation.test.mjs`](../../tests/api/auth-08-rbac-navigation.test.mjs) e [`tests/e2e/auth-08-profile-navigation.spec.mjs`](../../tests/e2e/auth-08-profile-navigation.spec.mjs) |
+| **2. Logout encerra o acesso conforme a regra de sessão.** | `PASS` (`204` no logout + `401` ao tentar reabrir rota autenticada por link direto) | `WARN` (Aguarda `AUTH-08-FE-01`, `BE-006` e fechamento de `SPEC-AUTH-002` em `PG-006`) | - Verificado em `CT-AUTH08-01..05` e `E2E-AUTH08-01..03` (`postLogoutAttempt.status === 401`, `redirectTo === "/login"`)<br>- Defeito 2 registrado na Seção 5 |
+| **3. Evidência, defeitos, PR e revisão estão vinculados.** | `PASS` (Todos os artefatos versionados e rastreados) | `WARN` (Aguardando revisão humana de Gabriel Ribeiro) | - **Evidência:** Este relatório (`docs/evidences/auth-08-qa-profile-navigation-matrix.md`) e [`docs/ac-evidence-matrix.md`](../ac-evidence-matrix.md)<br>- **Defeitos:** Defeitos 1, 2 e 3 registrados com passos de reprodução na Seção 5<br>- **Branch / PR:** [`feat/auth-08-qa-profile-navigation`](https://github.com/UniSENAI-Sorocaba/plataforma-quality/tree/feat/auth-08-qa-profile-navigation) ([Abrir/Visualizar PR](https://github.com/UniSENAI-Sorocaba/plataforma-quality/pull/new/feat/auth-08-qa-profile-navigation))<br>- **Revisor designado:** Gabriel Ribeiro de Camargo Miranda (`@GabrielRibeiro`) |
