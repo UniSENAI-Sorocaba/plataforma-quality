@@ -1,6 +1,13 @@
 # Relatório de Validação RBAC/ABAC, Matriz Allow/Deny e Payloads Sanitizados: `QA-009`
 
 - **Issue de Qualidade:** [`QA-009` (`plataforma-quality#9`)](https://github.com/UniSENAI-Sorocaba/plataforma-quality/issues/9) — `[QA-009] RBAC cobre allow/deny por perfil e rota`
+- **Metadados da Issue:**
+  - **Work ID:** `QA-009`
+  - **Prioridade / Sprint:** `P0` / `S1`
+  - **Estimativa:** `5 SP`
+  - **Responsável inicial:** Bianca Cirilo
+  - **Revisor:** Gabriel Ribeiro (`@GabrielRibeiro`)
+  - **Dependências:** `BE-010` (complementado por `AUTH-08-BE` e fechamento normativo `PG-006..012`)
 - **Refinamento de Governança / Produto:** [`PG-006` (`plataforma-governance#6`)](https://github.com/UniSENAI-Sorocaba/plataforma-governance/issues/6) a `PG-012` / [`AUTH-08` (`plataforma-governance#21`)](https://github.com/UniSENAI-Sorocaba/plataforma-governance/issues/21)
 - **SPECs e Critérios de Aceite Cobertos:**
   - **Núcleo de Autorização:** `SPEC-AUTH-003` (`AC-AUTH-003-01` — acúmulo de funções no mesmo CPF; `AC-AUTH-003-02` — funções oficiais `COORDENACAO`, `DOCENTE`, `ALUNO`; `AC-AUTH-003-03` — escopo por vínculo docente ao projeto; `AC-AUTH-003-04` — remoção de participante com justificativa obrigatória; `AC-AUTH-003-05` — escopo discente por vínculo/atribuição; `AC-AUTH-003-06` — negação por padrão e autorização server-side)
@@ -316,6 +323,8 @@
   - **Motivo do `WARN` (Exige Decisão Humana):** Pendência de implementação dos endpoints e middlewares reais no `plataforma-backend` (`BE-010` / `AUTH-08-BE`), reconciliação final das SPECs em `Draft` (`PG-006..012`) e publicação da tag `governance-v0.1.0` no repositório `plataforma-governance`.
 - **Vínculo de PR e Revisão:**
   - **Issue vinculada:** `Closes #9` ([`plataforma-quality#9`](https://github.com/UniSENAI-Sorocaba/plataforma-quality/issues/9))
-  - **Responsável pela validação:** Ahslam Mendes
-  - **Revisor designado (Qualidade / Segurança):** Gabriel Ribeiro de Camargo Miranda (`@GabrielRibeiro`) / Gustavo (`Security Review`)
+  - **Prioridade / Sprint / Estimativa:** `P0/S1` (`5 SP`)
+  - **Responsável inicial (Issue):** Bianca Cirilo | **Execução / Automação:** Ahslam Mendes
+  - **Revisor indicado:** Gabriel Ribeiro (`@GabrielRibeiro`)
+  - **Dependência registrada:** `BE-010`
 
