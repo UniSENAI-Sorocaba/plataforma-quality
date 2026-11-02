@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "node --test tests/repository/*.test.mjs"
+    "test": "node --test tests/repository/*.test.mjs",
+    "coverage-gate": "node scripts/coverage-gate.mjs"
   }
 }
