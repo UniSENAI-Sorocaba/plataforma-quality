@@ -1,0 +1,75 @@
+{
+  "_meta": {
+    "issue": "QA-016",
+    "spec": "SPEC-PI-003 (Draft)",
+    "contrato": "Contrato API core 0.1.0 (Draft, não normativo), recurso /api/v1/evaluations, develop 421512e",
+    "regra_do_contrato": "Notas de 0 a 10, até 2 casas decimais; valores como 8.555 são rejeitados com 400 VALIDATION_ERROR",
+    "convencao": "Notas são texto para nunca passarem por float. `literal` é o JSON exato enviado no campo (número, texto entre aspas escapadas, null). `ausente: true` omite o campo.",
+    "aviso": "O finalGrade esperado só pode ser preenchido quando a SPEC-PI-003/BE-015 definir fórmula, pesos e arredondamento. QA não escolhe a regra matemática (ver docs/questions/QA-016-perguntas.md)."
+  },
+
+  "validas": [
+    { "id": "PRE-01", "descricao": "duas casas decimais", "technicalGrade": "8.55", "presentationGrade": "7.25", "artifactGrade": "9.10", "ac": "contrato: evaluations" },
+    { "id": "PRE-03a", "descricao": "limite inferior", "technicalGrade": "0.00", "presentationGrade": "0.00", "artifactGrade": "0.00", "ac": "contrato: evaluations" },
+    { "id": "PRE-03b", "descricao": "limite superior", "technicalGrade": "10.00", "presentationGrade": "10.00", "artifactGrade": "10.00", "ac": "contrato: evaluations" },
+    { "id": "PRE-04", "descricao": "inteiros sem casas decimais", "technicalGrade": "7", "presentationGrade": "8", "artifactGrade": "9", "ac": "contrato: evaluations" },
+    { "id": "PRE-05", "descricao": "uma casa decimal", "technicalGrade": "6.5", "presentationGrade": "7.5", "artifactGrade": "8.5", "ac": "contrato: evaluations" }
+  ],
+
+  "invalidas": [
+    { "id": "PRE-02a", "campo": "technicalGrade", "literal": "8.555", "motivo": "3 casas decimais (exemplo do próprio contrato)" },
+    { "id": "PRE-02b", "campo": "presentationGrade", "literal": "0.001", "motivo": "3 casas decimais perto do limite inferior" },
+    { "id": "PRE-02c", "campo": "artifactGrade", "literal": "9.999", "motivo": "3 casas decimais perto do limite superior" },
+    { "id": "LIM-01a", "campo": "technicalGrade", "literal": "-0.01", "motivo": "abaixo do limite" },
+    { "id": "LIM-01b", "campo": "presentationGrade", "literal": "10.01", "motivo": "acima do limite" },
+    { "id": "LIM-01c", "campo": "artifactGrade", "literal": "11", "motivo": "acima do limite (inteiro)" },
+    { "id": "LIM-01d", "campo": "technicalGrade", "literal": "-1", "motivo": "negativa (inteiro)" },
+    { "id": "LIM-02a", "campo": "technicalGrade", "ausente": true, "motivo": "campo ausente" },
+    { "id": "LIM-02b", "campo": "presentationGrade", "literal": "null", "motivo": "valor null" },
+    { "id": "LIM-02c", "campo": "artifactGrade", "literal": "\"abc\"", "motivo": "texto não numérico", "aceitaTambem": "REQUEST_ERROR" },
+    { "id": "LIM-02d", "campo": "technicalGrade", "literal": "\"\"", "motivo": "texto vazio", "aceitaTambem": "REQUEST_ERROR" },
+    { "id": "LIM-02e", "campo": "presentationGrade", "literal": "true", "motivo": "tipo booleano", "aceitaTambem": "REQUEST_ERROR" }
+  ],
+
+  "observacoes_sem_regra_aprovada": [
+    {
+      "id": "PRE-07",
+      "descricao": "zero à direita além da 2ª casa (8.550): numericamente tem 2 casas, textualmente 3",
+      "technicalGrade": "8.550",
+      "presentationGrade": "7.25",
+      "artifactGrade": "9.10",
+      "nota": "O contrato não define. Qualquer resposta (201 ou 400) é registrada como WARN para o Backend/PO decidirem; não é PASS nem FAIL."
+    }
+  ],
+
+  "determinismo": {
+    "id": "DET-01",
+    "repeticoes": 5,
+    "entrada": { "technicalGrade": "8.55", "presentationGrade": "7.25", "artifactGrade": "9.10" },
+    "calculo": null,
+    "finalGradeEsperado": null,
+    "pendente": "Preencher `finalGradeEsperado` e o passo a passo em `calculo` (feito à mão, ANTES de executar) quando a SPEC-PI-003 definir fórmula, pesos e arredondamento. Enquanto for null, o caso é BLOQUEADO se o finalGrade vier nulo, e só confere igualdade entre repetições se vier preenchido."
+  },
+
+  "arredondamento": [
+    {
+      "id": "PRE-06",
+      "entrada": { "technicalGrade": "8.55", "presentationGrade": "7.25", "artifactGrade": "9.10" },
+      "calculo": null,
+      "finalGradeEsperado": null,
+      "pendente": "Aguardando regra de arredondamento (half-up, half-even, truncamento) e escala da SPEC-PI-003. Casos de borda x.xx5 só entram depois da regra aprovada, com resultado esperado calculado à mão."
+    }
+  ],
+
+  "permissao": [
+    { "id": "PER-01", "ac": "AC-PI-003-03", "cenario": "usuário não responsável tenta finalizar/reabrir/corrigir; valor e finalização ficam intactos", "bloqueio": "BE-004/BE-010 (RBAC) e endpoints de finalizar/reabrir inexistentes no contrato 0.1.0" },
+    { "id": "PER-02", "ac": "AC-PI-003-04", "cenario": "aluno do projeto consulta a avaliação individual do docente do próprio projeto", "bloqueio": "BE-004/BE-010" },
+    { "id": "PER-03", "ac": "AC-PI-003-04", "cenario": "aluno de outro projeto não recebe a avaliação individual (negado, sem vazar conteúdo)", "bloqueio": "BE-004/BE-010" },
+    { "id": "PER-04", "ac": "AC-PI-003-04", "cenario": "visitante anônimo recebe 401 UNAUTHENTICATED nas avaliações individuais", "bloqueio": "BE-004" },
+    { "id": "PER-05", "ac": "AC-PI-003-04", "cenario": "nota agregada do projeto só é pública se publicada conforme a decisão oficial", "bloqueio": "BE-010 e decisão oficial de publicação" }
+  ],
+
+  "versao_anterior": [
+    { "id": "VER-05", "ac": "AC-PI-003-05", "cenario": "histórico/versão anterior da nota", "bloqueio": "Conflito: o card QA-016 pede 'preservação da versão anterior'; SPEC-PI-003 AC-05 e as respostas 50/62 do caderno dizem 'sem histórico'. Decisão do PO pendente." }
+  ]
+}
