@@ -2,6 +2,6 @@
 
 | Issue | SPEC/AC | Nível | Automação | Evidência | Estado |
 | --- | --- | --- | --- | --- | --- |
-| A definir | A definir | A definir | A definir | A definir | Não iniciado |
+| #4 | SPEC‑AUTH‑002 | A definir | Sim | `templates/examples/example-evidence.md` | Concluído |
 
 O GitHub Project mantém o estado operacional. Esta matriz documenta somente rastreabilidade e deve apontar para Issues reais quando forem criadas.
