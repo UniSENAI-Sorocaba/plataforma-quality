@@ -1,3 +1,10 @@
 # E2E
 
 Jornadas críticas no staging com Playwright, dados sintéticos e limpeza idempotente.
+
+## Suítes disponíveis
+
+- [`auth-08-profile-navigation.spec.mjs`](./auth-08-profile-navigation.spec.mjs): Validação da jornada autenticada por perfil (`ALUNO`, `DOCENTE`, `COORDENACAO`), redirecionamento pós-login, menus visíveis/ocultos, bloqueio de link direto a rotas proibidas e encerramento de sessão no logout (`AUTH-08-QA` / `SPEC-AUTH-001..004`).
+- [`qa-019-staging-critical-journeys.spec.mjs`](./qa-019-staging-critical-journeys.spec.mjs): Validação E2E Playwright das 12 jornadas críticas expostas pelo frontend (`FE-004..016`) cobrindo login, sessão, proposta, solicitação de participação, aprovação/negação docente, edital, banca, upload, horas, notas, certificado e catálogo público (`SPEC-AUTH-001..004`, `SPEC-PI-001..004`, `SPEC-EXT-001..003`, `SPEC-PORTAL-001..002`), com captura automática e sanitizada de `screenshot` (`only-on-failure`), `video` (`retain-on-failure`) e `trace` (`retain-on-failure`) em falhas (`QA-019`).
+- [`qa-029-production-smoke-rollback.spec.mjs`](./qa-029-production-smoke-rollback.spec.mjs): Validação de Smoke em produção para as 5 jornadas críticas (`SMK-01..05` em `SPEC-AUTH-001..004`, `SPEC-PI-001..004`, `SPEC-EXT-001..003`, `SPEC-PORTAL-001..002`), avaliação de métricas/SLIs pós-deploy (`INF-019`), teste do gatilho documentado de rollback Blue-Green sem indisponibilidade indevida (`INF-020`) e geração de checklist, logs sanitizados, métricas e decisão formal de `ROLLBACK` / `NO_ROLLBACK` (`QA-029`).
+- [`qa-029-production-smoke-rollback.spec.mjs`](./qa-029-production-smoke-rollback.spec.mjs): Smoke em produção para todas as SPECs que possuem jornadas críticas (`SPEC-AUTH-001..004`, `SPEC-PI-001..004`, `SPEC-EXT-001..003`, `SPEC-PORTAL-001..002`), validação de métricas pós-deploy (SLIs/SLOs: `/healthz`, `/readyz`, taxa HTTP `5xx`, latência `p95`/`p99`, disponibilidade e saturação) e teste do gatilho documentado de rollback zero-downtime sem indisponibilidade indevida (`QA-029` / `INF-019–020`).
