@@ -1,0 +1,121 @@
+# ============================================================================
+# OWASP ZAP Automation Framework — Plano de Varredura DAST (QA-026 / Issue #26)
+# Ambiente Alvo: Validação Efêmera / Staging (INF-009)
+# ATENÇÃO: Proibido apontar para ambiente de Produção sem autorização formal.
+# ============================================================================
+env:
+  contexts:
+    - name: "Portal-Publico-Anonimo"
+      urls:
+        - "${STAGING_BASE_URL}"
+      includePaths:
+        - "${STAGING_BASE_URL}/.*"
+        - "${STAGING_BASE_URL}/projetos.*"
+        - "${STAGING_BASE_URL}/editais.*"
+        - "${STAGING_BASE_URL}/certificados/verificar.*"
+        - "${STAGING_BASE_URL}/api/v1/public/.*"
+      excludePaths:
+        - "${STAGING_BASE_URL}/_next/static/.*"
+        - "${STAGING_BASE_URL}/.*\\.(png|jpg|jpeg|svg|ico|woff|woff2|css\\.map)$"
+        - "${STAGING_BASE_URL}/(aluno|docente|coordenacao|admin)/.*"
+
+    - name: "Plataforma-Autenticada-RBAC"
+      urls:
+        - "${STAGING_BASE_URL}"
+      includePaths:
+        - "${STAGING_BASE_URL}/aluno/.*"
+        - "${STAGING_BASE_URL}/docente/.*"
+        - "${STAGING_BASE_URL}/coordenacao/.*"
+        - "${STAGING_BASE_URL}/api/v1/(auth|projetos|pi|extensao|horas|avaliacoes|arquivos|certificados)/.*"
+      excludePaths:
+        # Evita encerramento prematuro da sessão do scanner durante spider/active scan
+        - "${STAGING_BASE_URL}/api/v1/auth/logout.*"
+        - "${STAGING_BASE_URL}/logout.*"
+        # Arquivos estáticos de build sem superfície dinâmica
+        - "${STAGING_BASE_URL}/_next/static/.*"
+        - "${STAGING_BASE_URL}/.*\\.(png|jpg|jpeg|svg|ico|woff|woff2)$"
+      authentication:
+        method: "json"
+        parameters:
+          loginPageUrl: "${STAGING_BASE_URL}/login"
+          loginRequestUrl: "${STAGING_BASE_URL}/api/v1/auth/login"
+          loginRequestBody: '{"cpf":"${ZAP_SYNTHETIC_CPF}","password":"${ZAP_SYNTHETIC_PASSWORD}"}'
+        verification:
+          method: "response"
+          loggedInRegex: "\\Q\"authenticated\":true\\E"
+          loggedOutRegex: "\\Q\"code\":\"UNAUTHENTICATED\"\\E"
+      sessionManagement:
+        method: "headers"
+        parameters:
+          Authorization: "Bearer {%json:accessToken%}"
+      users:
+        - name: "USR-ZAP-ALUNO"
+          credentials:
+            username: "000.000.001-01"
+            password: "[SYNTHETIC_ZAP_PASS_ALUNO]"
+        - name: "USR-ZAP-DOCENTE"
+          credentials:
+            username: "000.000.002-02"
+            password: "[SYNTHETIC_ZAP_PASS_DOCENTE]"
+        - name: "USR-ZAP-COORD"
+          credentials:
+            username: "000.000.003-03"
+            password: "[SYNTHETIC_ZAP_PASS_COORD]"
+
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    progressToStdout: true
+
+jobs:
+  - type: passiveScan-config
+    parameters:
+      maxAlertsPerRule: 10
+      scanOnlyInScope: true
+      enableTags: false
+
+  - type: spider
+    parameters:
+      context: "Portal-Publico-Anonimo"
+      maxDuration: 5
+      maxDepth: 5
+
+  - type: spider
+    parameters:
+      context: "Plataforma-Autenticada-RBAC"
+      user: "USR-ZAP-ALUNO"
+      maxDuration: 5
+      maxDepth: 5
+
+  - type: spiderAjax
+    parameters:
+      context: "Plataforma-Autenticada-RBAC"
+      user: "USR-ZAP-DOCENTE"
+      maxDuration: 5
+
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 5
+
+  - type: activeScan
+    parameters:
+      context: "Portal-Publico-Anonimo"
+      policy: "Default Policy"
+      maxRuleDurationInMins: 5
+      maxScanDurationInMins: 15
+
+  - type: activeScan
+    parameters:
+      context: "Plataforma-Autenticada-RBAC"
+      user: "USR-ZAP-ALUNO"
+      policy: "Default Policy"
+      maxRuleDurationInMins: 5
+      maxScanDurationInMins: 20
+
+  - type: report
+    parameters:
+      template: "traditional-json"
+      reportDir: "reports/zap"
+      reportFile: "qa-026-zap-report-sanitized"
+      reportTitle: "QA-026 OWASP ZAP DAST Report (Sanitized)"
+      reportDescription: "Varredura DAST sobre rotas públicas e autenticadas no ambiente de validação efêmero (INF-009)"
