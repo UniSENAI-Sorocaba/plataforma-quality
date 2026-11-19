@@ -1,0 +1,42 @@
+{
+  "workId": "QA-025",
+  "issue": 25,
+  "dependencies": ["INF-003", "INF-006"],
+  "blockingSeverities": ["HIGH", "CRITICAL"],
+  "requiredFronts": [
+    {
+      "front": "SAST",
+      "tool": "CodeQL / Semgrep",
+      "toolVersion": "2.x",
+      "scope": ["plataforma-backend", "plataforma-frontend", "plataforma-quality"]
+    },
+    {
+      "front": "SCA",
+      "tool": "GitHub Dependency Review / npm audit",
+      "toolVersion": "10.x",
+      "scope": ["package-lock.json", "pnpm-lock.yaml"]
+    },
+    {
+      "front": "CONTAINER",
+      "tool": "Trivy",
+      "toolVersion": "0.56.x",
+      "scope": ["Dockerfile", "ghcr.io/unisenai-sorocaba/*"]
+    },
+    {
+      "front": "IAC",
+      "tool": "Checkov / Trivy Config",
+      "toolVersion": "3.x",
+      "scope": ["infra/", ".github/workflows/", "docker-compose*.yml"]
+    }
+  ],
+  "riskAcceptanceRequiredFields": [
+    "exceptionId",
+    "front",
+    "findingId",
+    "owner",
+    "approvedBy",
+    "mitigation",
+    "defectIssue",
+    "expiresAt"
+  ]
+}
