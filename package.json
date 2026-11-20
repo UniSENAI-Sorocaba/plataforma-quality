@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "test": "node --test tests/repository/*.test.mjs",
-    "test:e2e:t13": "node tests/e2e/t13-deliverable-browser.mjs"
+    "test:e2e:t13": "node tests/e2e/t13-deliverable-browser.mjs",
+    "test:e2e:t15": "node tests/e2e/t15-extension-activities-browser.mjs"
   },
   "devDependencies": {
     "playwright": "^1.65.1"
