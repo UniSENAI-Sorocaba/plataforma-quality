@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "test": "node --test tests/repository/*.test.mjs"
+    "test": "node --test tests/repository/*.test.mjs",
+    "test:e2e:t13": "node tests/e2e/t13-deliverable-browser.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.1"
   }
 }
