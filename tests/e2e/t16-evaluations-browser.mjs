@@ -18,7 +18,9 @@ try {
   await page.locator("#login-identifier").fill(email);
   await page.locator("#login-password").fill(password);
   await page.getByRole("button", { name: "Entrar" }).click();
-  await page.waitForURL(`${baseUrl}/coordenacao`, { timeout: 10_000 });
+  await page.waitForTimeout(1_000);
+  const accessToken = await page.evaluate(() => window.sessionStorage.getItem("plataforma.accessToken"));
+  if (!accessToken) throw new Error("Login não persistiu o access token no navegador.");
   await page.goto(`${baseUrl}/projects/${projectId}/periods/${periodId}/evaluations`, { waitUntil: "networkidle" });
   await page.locator("#evaluated-student-id").fill(evaluatedStudentId);
   await page.locator("#evaluation-date").fill(new Date(Date.now() + 86_400_000).toISOString().slice(0, 16));
