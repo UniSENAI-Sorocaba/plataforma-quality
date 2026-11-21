@@ -10,12 +10,15 @@ if (!projectId || !periodId) throw new Error("E2E_T15_PROJECT_ID e E2E_T15_PERIO
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage();
 try {
-  await page.goto(`${baseUrl}/login`, { waitUntil: "networkidle" });
+  // Next.js keeps development/runtime requests open; DOM readiness is the
+  // stable boundary for this browser journey.
+  await page.goto(`${baseUrl}/login`, { waitUntil: "domcontentloaded" });
   await page.locator("#login-identifier").fill(email);
   await page.locator("#login-password").fill(password);
   await page.getByRole("button", { name: "Entrar" }).click();
   await page.waitForURL(`${baseUrl}/`, { timeout: 10_000 });
-  await page.goto(`${baseUrl}/projects/${projectId}/periods/${periodId}/activities`, { waitUntil: "networkidle" });
+  await page.goto(`${baseUrl}/projects/${projectId}/periods/${periodId}/activities`, { waitUntil: "domcontentloaded" });
+  await page.locator("#activity-title").waitFor({ timeout: 10_000 });
   await page.locator("#activity-title").fill(`Atividade E2E ${Date.now()}`);
   await page.locator("#activity-description").fill("Descrição sintética da atividade enviada no E2E.");
   await page.locator("#activity-hours").fill("1.25");
