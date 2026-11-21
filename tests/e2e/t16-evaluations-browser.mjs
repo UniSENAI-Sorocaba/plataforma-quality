@@ -18,7 +18,7 @@ page.on("response", (response) => {
   if (response.url().includes("/api/")) apiResponses.push({ url: response.url(), status: response.status() });
 });
 try {
-  await page.goto(`${baseUrl}/login`, { waitUntil: "networkidle" });
+  await page.goto(`${baseUrl}/login`, { waitUntil: "domcontentloaded" });
   const loginStatus = await page.evaluate(async ({ loginEmail, loginPassword }) => {
     const response = await fetch("/api/v1/auth/login", {
       method: "POST",
@@ -32,7 +32,8 @@ try {
     return response.status;
   }, { loginEmail: email, loginPassword: password });
   if (loginStatus !== 200) throw new Error(`Login API retornou HTTP ${loginStatus}.`);
-  await page.goto(`${baseUrl}/projects/${projectId}/periods/${periodId}/evaluations`, { waitUntil: "networkidle" });
+  await page.goto(`${baseUrl}/projects/${projectId}/periods/${periodId}/evaluations`, { waitUntil: "domcontentloaded" });
+  await page.locator("#evaluated-student-id").waitFor({ timeout: 10_000 });
   await page.locator("#evaluated-student-id").fill(evaluatedStudentId);
   await page.locator("#evaluation-date").fill(new Date(Date.now() + 86_400_000).toISOString().slice(0, 16));
   await page.locator("#evaluator-ids").fill(evaluatorId);
