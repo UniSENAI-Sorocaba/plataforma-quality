@@ -31,6 +31,8 @@ npm run test:e2e:t13
 
 As URLs podem ser ajustadas com `FRONTEND_URL`, e as credenciais sintéticas com `E2E_STUDENT_EMAIL` e `E2E_STUDENT_PASSWORD`. O resultado só deve ser considerado evidência executada quando o comando terminar com `browserE2E: "passed"`.
 
+O E2E de T15 usa `npm run test:e2e:t15` e exige `E2E_T15_PROJECT_ID` e `E2E_T15_PERIOD_ID` apontando para um projeto/período sintéticos com o aluno autenticado como participante ativo. O cenário valida login, envio de atividade e exibição do total de horas.
+
 As demais ferramentas executoras continuam sendo adicionadas por Issues próprias (`QA-003`, `QA-005`, `QA-008+`) conforme endpoints, contratos e ambientes forem disponibilizados.
 
 ## Pendência de governança
