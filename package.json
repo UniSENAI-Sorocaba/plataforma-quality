@@ -5,6 +5,7 @@
   "scripts": {
     "test": "node --test tests/repository/*.test.mjs",
     "test:e2e:t13": "node tests/e2e/t13-deliverable-browser.mjs",
+    "test:e2e:t14": "node tests/e2e/t14-extension-opportunities-browser.mjs",
     "test:e2e:t15": "node tests/e2e/t15-extension-activities-browser.mjs",
     "test:e2e:t16": "node tests/e2e/t16-evaluations-browser.mjs"
   },
