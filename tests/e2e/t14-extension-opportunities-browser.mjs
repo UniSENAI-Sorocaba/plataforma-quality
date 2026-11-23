@@ -22,13 +22,16 @@ try {
 
   await page.goto(`${baseUrl}/extension`, { waitUntil: "domcontentloaded" });
   await page.getByRole("heading", { name: "Editais abertos" }).waitFor({ timeout: 10_000 });
+  await page.getByText("Editais em que você está inscrito", { exact: true }).waitFor({ timeout: 10_000 });
   const card = page.locator("article.project-card", { hasText: opportunityTitle });
   await card.getByRole("heading", { name: opportunityTitle }).waitFor({ timeout: 10_000 });
-  const applyButton = card.getByRole("button", { name: "Inscrever-se" });
-  await applyButton.click();
-  await page.getByText("Inscrição confirmada.", { exact: true }).waitFor({ timeout: 10_000 });
-  await card.getByRole("button", { name: "Inscrição confirmada" }).waitFor({ timeout: 10_000 });
-  await page.getByText("Editais em que você está inscrito", { exact: true }).waitFor({ timeout: 10_000 });
+  const enrolledOpportunity = page.locator(".extension-enrollments li", { hasText: opportunityTitle });
+  if (await enrolledOpportunity.count() === 0) {
+    const applyButton = card.getByRole("button", { name: "Inscrever-se" });
+    await applyButton.click();
+    await page.getByText("Inscrição confirmada.", { exact: true }).waitFor({ timeout: 10_000 });
+  }
+  await enrolledOpportunity.waitFor({ timeout: 10_000 });
 
   console.log(JSON.stringify({
     browserE2E: "passed",

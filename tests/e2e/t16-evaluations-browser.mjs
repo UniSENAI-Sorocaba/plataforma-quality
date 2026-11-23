@@ -18,20 +18,11 @@ page.on("response", (response) => {
   if (response.url().includes("/api/")) apiResponses.push({ url: response.url(), status: response.status() });
 });
 try {
-  await page.goto(`${baseUrl}/login`, { waitUntil: "domcontentloaded" });
-  const loginStatus = await page.evaluate(async ({ loginEmail, loginPassword }) => {
-    const response = await fetch("/api/v1/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: loginEmail, password: loginPassword }),
-    });
-    if (!response.ok) throw new Error(`Login API retornou HTTP ${response.status}.`);
-    const data = await response.json();
-    window.sessionStorage.setItem("plataforma.accessToken", data.accessToken);
-    if (data.refreshToken) window.sessionStorage.setItem("plataforma.refreshToken", data.refreshToken);
-    return response.status;
-  }, { loginEmail: email, loginPassword: password });
-  if (loginStatus !== 200) throw new Error(`Login API retornou HTTP ${loginStatus}.`);
+  await page.goto(`${baseUrl}/login`, { waitUntil: "networkidle" });
+  await page.locator("#login-identifier").fill(email);
+  await page.locator("#login-password").fill(password);
+  await page.getByRole("button", { name: "Entrar" }).click();
+  await page.waitForURL(new RegExp(`${baseUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/(coordenacao)?$`), { timeout: 10_000 });
   await page.goto(`${baseUrl}/projects/${projectId}/periods/${periodId}/evaluations`, { waitUntil: "domcontentloaded" });
   await page.locator("#evaluated-student-id").waitFor({ timeout: 10_000 });
   await page.locator("#evaluated-student-id").fill(evaluatedStudentId);
