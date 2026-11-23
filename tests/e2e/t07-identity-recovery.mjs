@@ -1,6 +1,6 @@
 const baseUrl = process.env.E2E_BASE_URL ?? "http://localhost:18081";
 const mailpitUrl = process.env.MAILPIT_URL ?? "http://localhost:8025";
-const pendingCpf = process.env.E2E_PENDING_CPF ?? "44444444444";
+const pendingCpf = process.env.E2E_PENDING_CPF ?? "00000000434";
 const pendingEmail = process.env.E2E_PENDING_EMAIL ?? "mock.pending.user@synthetic.local";
 const recoveryEmail = process.env.E2E_RECOVERY_EMAIL ?? "mock.student.01@synthetic.local";
 const initialPassword = process.env.E2E_INITIAL_PASSWORD ?? "FirstAccess123!";
